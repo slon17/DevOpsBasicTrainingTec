@@ -3,11 +3,11 @@ pipeline {
     //Determine in which node will the pipeline be executed
     node("principal") {
         stages {
-            stage('checkout'){
+            /*stage('checkout'){
                 steps {
                     sh 'git checkout ${branch_name}'
                 }
-            }
+            }*/
             stage('before') {
                 steps {
                     sh 'python --version'
