@@ -1,0 +1,23 @@
+pipeline {
+    //agent { docker { image 'python:3.7.2' } }
+    //Determine in which node will the pipeline be executed
+    node("principal") {
+        stages {
+            stage('before') {
+                steps {
+                    sh 'python --version'
+                    sh 'pip install -r requirements.txt'
+                }
+            stage('build') {
+                steps {
+                    sh 'python src/main.py'
+                }
+            }
+            stage('test') {
+                steps {
+                    sh 'tox'
+                }
+            }
+        }
+    }
+}
