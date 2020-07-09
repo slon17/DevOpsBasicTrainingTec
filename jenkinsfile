@@ -15,7 +15,7 @@ pipeline {
             //add build step on tox
             stage('build') {
                 steps {
-                    sh 'python3 tox -e build'
+                    sh 'python3 -m tox -e build'
                 }
             }
             stage('test') {
@@ -24,7 +24,7 @@ pipeline {
                     expression { params.test == true }
                 }
                 steps {
-                    sh 'python3 tox -e test'
+                    sh 'python3 -m tox -e test'
                 }
             }
         
