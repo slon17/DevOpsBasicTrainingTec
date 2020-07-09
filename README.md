@@ -97,14 +97,14 @@ pipeline {
 
 #### En la seccion general
 
-- Crea una nueva tarea <br>
+- Crea una nueva tarea de tipo multibranch pipeline<br>
 ![New Job](.images/newTask.PNG)
 
 - El name de tu tarea sera **NombreApellido**
 - Seleccion Pipeline y presiona el boton de ok
 ![Name,Pipeline](.images/Pipeline.PNG)
 - Activa la casilla esta ejecucion debe parametrizarse
-- Agrega un parametro de tipo string con la siguiente configuracion
+- Agrega un parametro de tipo booleano con la siguiente configuracion
 ![Parameters](.images/parameters.PNG)
 - Activa la casilla de github project e inserta el url de este repositorio
 ~~~
@@ -115,3 +115,9 @@ Estos son los eventos que pueden iniciar automaticamente nuestra tarea.
 Seleccionaremos la opcion: 
 ![git scm](.images/gitscm.PNG)
 Esto permitira que nuestra tarea se active al realizar un push a nuestro repositorio
+
+#### En la seccion Pipeline
+- Seleccionamos pipeline script from SCM
+- Indicamos el repositorio https://github.com/charlie83Gs/DevOpsBasicTrainingTec
+- En branches to build indicamos nuestra rama NombreAppellido
+![Pipeline config](.images/PipelineConfig.PNG)
