@@ -2,10 +2,10 @@ pipeline {
     //execute in specific docker container
     //agent { docker { image 'python:3.7.2' } }
     //execute in any available agent
-    //agent any
+    agent any
     //Determine in which node will the pipeline be executed
-    node("principal") {
-        stages {
+
+    stages {
             stage('before') {
                 steps {
                     sh 'python --version'
@@ -24,5 +24,5 @@ pipeline {
             }
         
     }
-    }
+    
 }
