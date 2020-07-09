@@ -15,12 +15,12 @@ pipeline {
             //add build step on tox
             stage('build') {
                 steps {
-                    sh 'tox -e web_scrap-build'
+                    sh 'python3 -m tox -e web_scrap-build'
                 }
             }
             stage('test') {
                 steps {
-                    sh 'tox -e web_scrap-test'
+                    sh 'python3 -m tox -e web_scrap-test'
                 }
             }
         
