@@ -19,6 +19,10 @@ pipeline {
                 }
             }
             stage('test') {
+                when{
+                    //only execute tests is test parameter is true
+                    expression { params.test == true }
+                }
                 steps {
                     sh 'python3 tox -e test'
                 }
