@@ -12,14 +12,15 @@ pipeline {
                     sh 'pip install -r requirements.txt'
                 }
             }
+            //add build step on tox
             stage('build') {
                 steps {
-                    sh 'python src/main.py'
+                    sh 'tox -e web_scrap-build'
                 }
             }
             stage('test') {
                 steps {
-                    sh 'tox'
+                    sh 'tox -e web_scrap-test'
                 }
             }
         
