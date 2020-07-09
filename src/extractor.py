@@ -12,7 +12,7 @@ RAMDOM_SEED = 2020
 
 #based on https://stackoverflow.com/questions/328356/extracting-text-from-html-file-using-python
 def text_from_html(html_text):
-    html_text = html_text.decode("utf-8").encode("ascii","ignore")
+    #html_text = html_text.decode("utf-8").encode("ascii","ignore")
     soup = BeautifulSoup(html_text)
     # kill all script and style elements
     for script in soup(["script", "style"]):

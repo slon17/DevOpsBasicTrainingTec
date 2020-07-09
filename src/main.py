@@ -9,7 +9,7 @@ if __name__ == "__main__":
     script_dir = os.path.dirname(__file__)
     relative_html_file_path = "Assets/DevOps-Wikipedia.html"
     html_file_path = os.path.join(script_dir, relative_html_file_path)
-    f = open(html_file_path,"r")
+    f = open(html_file_path,"r",encoding="utf8")
 
     html_text = f.read()
     text = extractor.text_from_html(html_text)
