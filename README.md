@@ -40,58 +40,73 @@ Los jobs se dividen en stages cada stage es un paso secuencial en nuestro job. D
 
 Instalamos las dependencias de nuestro proyecto
 ~~~
-stage('before') {
+                stage('before') {
                 steps {
-                    sh 'python --version'
-                    sh 'pip install -r requirements.txt'
-                }
-~~~
-
-
-Ejecutamos 
-~~~
-stage('build') {
-                steps {
-                    sh 'python src/main.py'
+                    sh 'python3 --version'
+                    sh 'pip3 install -r requirements.txt'
                 }
             }
 ~~~
 
 
-Ejecutamos los tests a nuestro programa
+Ejecutamos 
+~~~
+//add build step on tox
+            stage('build') {
+                steps {
+                    sh 'python3 -m tox -e build'
+                }
+            }
+~~~
+
+
+Ejecutamos los tests a nuestro programa, este stage se puede controlar mediante parametros
 ~~~
 stage('test') {
+                when{
+                    //only execute tests is test parameter is true
+                    expression { params.test == true }
+                }
                 steps {
-                    sh 'tox'
+                    sh 'python3 -m tox -e test'
                 }
             }
 ~~~
 
 El jenkins file resultante es el siguiente
 ~~~
-//Determine in which node will the pipeline be executed
-
 pipeline {
+    //execute in specific docker container
+    //agent { docker { image 'python:3.7.2' } }
+    //execute in any available agent
+    agent any
     //Determine in which node will the pipeline be executed
-    node("principal") {
-        stages {
+
+    stages {
             stage('before') {
                 steps {
-                    sh 'python --version'
-                    sh 'pip install -r requirements.txt'
+                    sh 'python3 --version'
+                    sh 'pip3 install -r requirements.txt'
                 }
+            }
+            //add build step on tox
             stage('build') {
                 steps {
-                    sh 'python src/main.py'
+                    sh 'python3 -m tox -e build'
                 }
             }
             stage('test') {
+                when{
+                    //only execute tests is test parameter is true
+                    expression { params.test == true }
+                }
                 steps {
-                    sh 'tox'
+                    sh 'python3 -m tox -e test'
                 }
             }
-        }
+        
     }
+    
 }
 ~~~
 
