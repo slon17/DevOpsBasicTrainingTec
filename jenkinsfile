@@ -4,7 +4,7 @@ pipeline {
     //execute in any available agent
     agent any
     //Determine in which node will the pipeline be executed
-    
+
     stages {
             stage('before') {
                 steps {
@@ -31,7 +31,7 @@ pipeline {
             stage('SonarQube analysis') {
                 steps {
                     script{
-                        def scannerHome = tool 'SonarScanner 4.0';
+                        def scannerHome = tool 'SonarScanner';
                         withSonarQubeEnv('sonar') { // If you have configured more than one global server connection, you can specify its name
                             sh "${scannerHome}/bin/sonar-scanner"
                         }
