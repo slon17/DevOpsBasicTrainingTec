@@ -136,3 +136,14 @@ dmypy.json
 .pytype/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+
+
+# Created by https://www.toptal.com/developers/gitignore/api/sonar
+# Edit at https://www.toptal.com/developers/gitignore?templates=sonar
+
+### Sonar ###
+#Sonar generated dir
+/.sonar/
+
+# End of https://www.toptal.com/developers/gitignore/api/sonar
