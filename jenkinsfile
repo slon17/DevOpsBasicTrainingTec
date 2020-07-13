@@ -4,10 +4,7 @@ pipeline {
     //execute in any available agent
     agent any
     //Determine in which node will the pipeline be executed
-    options {
-        timeout(time: 0.2, unit: 'HOURS') 
-    }
-
+    
     stages {
             stage('before') {
                 steps {
