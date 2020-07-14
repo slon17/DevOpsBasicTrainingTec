@@ -100,7 +100,7 @@ pipeline {
 ~~~
  
 #### En la sección general
-- Visitar el sitio de [jenkins](jenknis-tec.westus.cloudapp.azure.com)
+- Visitar el sitio de [jenkins](http://jenknis-tec.westus.cloudapp.azure.com)
 - Crea una nueva tarea de tipo  pipeline<br>
 ![New Job](.images/newTask.PNG)
  
