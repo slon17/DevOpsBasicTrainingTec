@@ -2,22 +2,11 @@
 Este repositorio contiene el codigo base para automatizar el testing de un programa utilizando jenkins
 
 ### Resultados esperedos:
-- Iniciar un build al realizar un evento de push en Github
-- Correr pruebas unitarias en pytest
+- Correr pruebas unitarias en pytest de manera automatica con jenkins
 - Realizar un analysis estatico del codigo utilizando SonarQube
 
-### 1. Configurar el webhook
-Un webhook envia un mensaje cuando ocurre un evento especifico en github. Esto se puede utilizar para iniciar
-trabajos de jenkins automaticamente. Los pasos a seguir son los siguientes
-- Ve a la seccion de Settings/Webhooks-Add Weebhooks
-- Insertar contraseña si se solicita
-- Coloca http://jenknis-tec.westus.cloudapp.azure.com/github-webhook/ en el campo **Payload URL**
-- Selecciona application/json en el campo **Payload URL**
-- La configuracion final es la siguiente
-![Configuracion de webhook](.images/ConfigureWebhook.PNG)
-- Por ultimo guarda la configuracion
 
-### 2. Crear un jenkins job
+### 1. Crear un jenkins job
 En jenkins podemos automatizar nuestro proceso de desarrollo utilizando jobs. Cada jobs consiste en un set de pasos 
 que ejecutara el servidor, esto se puede utilizar para realizar testing cada que se genera un cambio en un rama, para garantizar la estabilidad del software antes de hacer un deployment e incluso realizar un deployment de manera automatica.
 
@@ -111,8 +100,8 @@ pipeline {
 ~~~
 
 #### En la seccion general
-
-- Crea una nueva tarea de tipo multibranch pipeline<br>
+- Visitar el sitio de [jenkins](jenknis-tec.westus.cloudapp.azure.com)
+- Crea una nueva tarea de tipo  pipeline<br>
 ![New Job](.images/newTask.PNG)
 
 - El name de tu tarea sera **NombreApellido**
@@ -136,3 +125,21 @@ Esto permitira que nuestra tarea se active al realizar un push a nuestro reposit
 - Indicamos el repositorio https://github.com/charlie83Gs/DevOpsBasicTrainingTec
 - En branches to build indicamos nuestra rama NombreAppellido
 ![Pipeline config](.images/PipelineConfig.PNG)
+
+
+### 2. Analizar el codigo utilizando SonarQube
+Para tomar ventaja de SonarQube en nuestro pipeline vamos a modificar el jenkins agregando un nuevo stage
+
+
+~~~
+stage('SonarQube analysis') {
+                steps {
+                    script{
+                        def scannerHome = tool 'SonarScanner';
+                        withSonarQubeEnv('sonar') { // If you have configured more than one global server connection, you can specify its name
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    }
+                }
+            
+~~~
