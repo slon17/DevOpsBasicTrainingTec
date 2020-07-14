@@ -1,32 +1,32 @@
 # Basic Training for DevOps
-Este repositorio contiene el codigo base para automatizar el testing de un programa utilizando jenkins
-
-### Resultados esperedos:
-- Correr pruebas unitarias en pytest de manera automatica con jenkins
-- Realizar un analysis estatico del codigo utilizando SonarQube
-
-
+Este repositorio contiene el código base para automatizar el testing de un programa utilizando jenkins
+ 
+### Resultados esperados:
+- Correr pruebas unitarias en pytest de manera automática con jenkins
+- Realizar un análisis estático del código utilizando SonarQube
+ 
+ 
 ### 1. Crear un jenkins job
 En jenkins podemos automatizar nuestro proceso de desarrollo utilizando jobs. Cada jobs consiste en un set de pasos 
-que ejecutara el servidor, esto se puede utilizar para realizar testing cada que se genera un cambio en un rama, para garantizar la estabilidad del software antes de hacer un deployment e incluso realizar un deployment de manera automatica.
-
-
+que ejecutará el servidor, esto se puede utilizar para realizar testing cada que se genera un cambio en un rama, para garantizar la estabilidad del software antes de hacer un deployment e incluso realizar un deployment de manera automática.
+ 
+ 
 Para realizar un  jenkins job debemos crear un archivo llamado **jenkinsfile**
-En este jenkins file especificaremos en que nodo debe correr nuestro job en este caso es el nodo **principal**.
+En este jenkins file especificaremos en qué nodo debe correr nuestro job en este caso es el nodo **principal**.
 ~~~
 //tell jenkins this is a pipeline
 pipeline {
-
+ 
     //Determine in which node will the pipeline be executed
-    node("principal") {
+    agent any
      
     }
 }
 ~~~
-
+ 
 Los jobs se dividen en stages cada stage es un paso secuencial en nuestro job. Definiremos 3 stages para automatizar el testing de nuestro codigo en python.
-
-
+ 
+ 
 Instalamos las dependencias de nuestro proyecto
 ~~~
                 stage('before') {
@@ -36,8 +36,8 @@ Instalamos las dependencias de nuestro proyecto
                 }
             }
 ~~~
-
-
+ 
+ 
 Ejecutamos 
 ~~~
 //add build step on tox
@@ -47,9 +47,9 @@ Ejecutamos
                 }
             }
 ~~~
-
-
-Ejecutamos los tests a nuestro programa, este stage se puede controlar mediante parametros
+ 
+ 
+Ejecutamos los tests a nuestro programa, este stage se puede controlar mediante parámetros
 ~~~
 stage('test') {
                 when{
@@ -61,7 +61,7 @@ stage('test') {
                 }
             }
 ~~~
-
+ 
 El jenkins file resultante es el siguiente
 ~~~
 pipeline {
@@ -70,7 +70,7 @@ pipeline {
     //execute in any available agent
     agent any
     //Determine in which node will the pipeline be executed
-
+ 
     stages {
             stage('before') {
                 steps {
@@ -98,39 +98,40 @@ pipeline {
     
 }
 ~~~
-
-#### En la seccion general
+ 
+#### En la sección general
 - Visitar el sitio de [jenkins](jenknis-tec.westus.cloudapp.azure.com)
 - Crea una nueva tarea de tipo  pipeline<br>
 ![New Job](.images/newTask.PNG)
-
+ 
 - El name de tu tarea sera **NombreApellido**
-- Seleccion Pipeline y presiona el boton de ok
+- Selección Pipeline y presiona el botón de ok
 ![Name,Pipeline](.images/Pipeline.PNG)
-- Activa la casilla esta ejecucion debe parametrizarse
-- Agrega un parametro de tipo booleano con la siguiente configuracion
+- Activa la casilla esta ejecución debe parametrizarse
+- Agrega un parámetro de tipo booleano con la siguiente configuracion
 ![Parameters](.images/parameters.PNG)
 - Activa la casilla de github project e inserta el url de este repositorio
 ~~~
 https://github.com/charlie83Gs/DevOpsBasicTrainingTec
 ~~~
 #### En la seccion Build Triggers
-Estos son los eventos que pueden iniciar automaticamente nuestra tarea.
-Seleccionaremos la opcion: 
+Estos son los eventos que pueden iniciar automáticamente nuestra tarea.
+Seleccionaremos la opción: 
 ![git scm](.images/gitscm.PNG)
-Esto permitira que nuestra tarea se active al realizar un push a nuestro repositorio
-
-#### En la seccion Pipeline
+Esto permitirá que nuestra tarea se active al realizar un push a nuestro repositorio
+ 
+#### En la sección Pipeline
 - Seleccionamos pipeline script from SCM
 - Indicamos el repositorio https://github.com/charlie83Gs/DevOpsBasicTrainingTec
 - En branches to build indicamos nuestra rama NombreAppellido
 ![Pipeline config](.images/PipelineConfig.PNG)
-
-
-### 2. Analizar el codigo utilizando SonarQube
+ 
+ 
+### 2. Analizar el código utilizando SonarQube
+ 
+#### 2.1 Actualizar el pipeline de jenkins
 Para tomar ventaja de SonarQube en nuestro pipeline vamos a modificar el jenkins agregando un nuevo stage
-
-
+ 
 ~~~
 stage('SonarQube analysis') {
                 steps {
@@ -141,5 +142,26 @@ stage('SonarQube analysis') {
                         }
                     }
                 }
-            
 ~~~
+ 
+#### 2.2 Crear un nuevo proyecto en SonarQube
+Sigue los siguientes pasos para crear un nuevo proyecto.
+- Abre la pagina de SonarQube [sonar link](http://sonar-tec.westus.cloudapp.azure.com:9000/)
+- Inicia sesión con los siguientes credenciales **tec** and password **$1234$**
+- Crea un proyecto con la siguiente llave **nombre_apellido**
+![Nuevo Proyecto Sonar](./.images/sonarNewProject.PNG)
+![Nuevo Proyecto Sonar Llave](./.images/sonarKey.PNG)
+ 
+#### 2.3 Crear un archivo de sonar-project.properties
+El archivo de sonar-project.properties lo utiliza jenkins para realizar el análisis de código de tu proyecto.
+- Crear un archivo sonar-project.properties en la razi del repositorio
+- Agrega las siguientes líneas en el archivo
+~~~
+sonar.projectKey=nombre_apellido
+sonar.sources=.
+~~~
+- Actualiza el repositorio
+ 
+#### 2.4 Realiza una análisis estático
+- Visita la [pagina de Jenkins](http://jenknis-tec.westus.cloudapp.azure.com/) y ejecuta tu build
+- Visita el [portal de SonarQube](http://sonar-tec.westus.cloudapp.azure.com:9000/) y revisa el resultado del análisis de código
