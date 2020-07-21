@@ -1,0 +1,26 @@
+//tell jenkins this is a pipeline
+pipeline{
+    //determine in which node is going to run
+    agent any
+    
+    //steps of execution
+    stages{
+        stage('before'){
+            sh 'python3 --version'
+            sh 'pip3 install -r requirements.txt'
+        }
+        stage('build'){
+            steps{
+                sh 'python3 -m tox -e test'
+            }
+        }
+        stage('test'){
+            when{
+                expression{ params.test == true}
+            }
+            steps {
+                sh 'python3 -m tox -e test'
+            }
+        }
+    }
+}
